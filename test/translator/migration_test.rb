@@ -9,8 +9,6 @@ class MigrationTest < ActiveSupport::TestCase
   test "Must have auto column" do
     Migrated.create_translation_table! :name => :text
     assert_migration_table(:name => :text)
-    
-    assert_equal :boolean, column_type(:auto)
   end
 
   protected
@@ -30,6 +28,7 @@ class MigrationTest < ActiveSupport::TestCase
     
       fields.each do |name, type|
         assert_equal type, column_type(name)
+        assert_equal :boolean, column_type("#{name}_auto_translation")
       end
     end  
 end

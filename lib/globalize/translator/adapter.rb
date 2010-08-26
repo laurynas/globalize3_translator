@@ -22,7 +22,7 @@ module Globalize
         from_locale = new_locales.include?(I18n.default_locale) ?
           I18n.default_locale : new_locales.first
           
-        from_value = stash[from_locale][attr]
+        from_value  = stash[from_locale][attr]
         
         I18n.available_locales.each do |locale|
           next if translated_attribute?(locale, attr)
