@@ -6,7 +6,7 @@ Globalize::ActiveRecord::Migration::Migrator.class_eval do
     create_translation_table_without_auto
     
     fields.each do |name, type|
-      field_name = "#{name}_auto_translation"
+      field_name = "#{name}_auto_translated"
       connection.add_column translations_table_name, field_name, :boolean  
     end
     

@@ -28,7 +28,7 @@ class MigrationTest < ActiveSupport::TestCase
     
       fields.each do |name, type|
         assert_equal type, column_type(name)
-        assert_equal :boolean, column_type("#{name}_auto_translation")
+        assert_equal :boolean, column_type("#{name}_auto_translated")
       end
     end  
 end
