@@ -27,11 +27,11 @@ class TranslatorTest < ActiveSupport::TestCase
     assert post.save!
     assert post.reload
     
-    assert_equal post.title, "Pirmas"
+    assert_equal "Pirmas",      post.title
     
     I18n.locale = :en
     
-    assert_equal post.title, "First"    
+    assert_equal "First",       post.title
   end
   
   test "Should translate data from default locale when saving" do
@@ -42,17 +42,22 @@ class TranslatorTest < ActiveSupport::TestCase
     assert post.save!
     assert post.reload
     
-    assert_equal post.title,    "Dog"
-    assert_equal post.content,  "Cat"
+    assert_equal "Dog",         post.title
+    assert_equal "Cat",         post.content
+    assert_equal false,         post.title.auto_translated?
+    assert_equal false,         post.content.auto_translated?
     
     I18n.locale = :lt
     
-    assert_equal post.title,    "Šuo"
-    assert_equal post.content,  "Katė"
+    assert_equal "Šuo",         post.title
+    assert_equal "Katė",        post.content
+    assert post.title.auto_translated?
+    assert post.content.auto_translated?
     
     I18n.locale = :cs
     
-    assert_equal post.title,    "Pes"
+    assert_equal "Pes",         post.title
+    assert post.title.auto_translated?
   end
   
 end

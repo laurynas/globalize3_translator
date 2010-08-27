@@ -17,6 +17,8 @@ ActiveRecord::Schema.define do
     t.text       :content
     t.boolean    :published
     t.datetime   :published_at
+    t.boolean    :title_auto_translated
+    t.boolean    :content_auto_translated
   end
 
   create_table :parents, :force => true do |t|
@@ -27,6 +29,8 @@ ActiveRecord::Schema.define do
     t.references :parent
     t.text       :content
     t.string     :type
+    
+    t.boolean    :content_auto_translated
   end
 
   create_table :comments, :force => true do |t|
@@ -38,6 +42,9 @@ ActiveRecord::Schema.define do
     t.references :comment
     t.string     :title
     t.text       :content
+
+    t.boolean    :title_auto_translated
+    t.boolean    :content_auto_translated
   end
 
   create_table :migrateds, :force => true do |t|
@@ -52,6 +59,7 @@ ActiveRecord::Schema.define do
     t.references :validatee
     t.string     :locale
     t.string     :string
+    t.boolean    :string_auto_translated
   end
 
   create_table :users, :force => true do |t|
@@ -62,26 +70,6 @@ ActiveRecord::Schema.define do
     t.references :user
     t.string     :locale
     t.string     :name
-  end
-
-  create_table :versions do |t|
-    t.belongs_to :versioned, :polymorphic => true
-    t.belongs_to :user, :polymorphic => true
-    t.string :user_name
-    t.text :change_log
-    t.integer :number
-    t.string :tag
-    t.string :locale
-
-    t.timestamps
-  end
-
-  change_table :versions do |t|
-    t.index [:versioned_id, :versioned_type]
-    t.index [:user_id, :user_type]
-    t.index :user_name
-    t.index :number
-    t.index :tag
-    t.index :created_at
+    t.boolean    :name_auto_translated    
   end
 end

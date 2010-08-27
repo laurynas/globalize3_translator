@@ -1,19 +1,18 @@
 module Globalize
   module Translator
     class Adapter
-      attr_reader :record, :automated
+      attr_reader :record
 
       delegate    :globalize, :to => :record
       delegate    :stash,     :to => :globalize
             
       def initialize(record)
         @record     = record
-        @automated  = Globalize::ActiveRecord::Attributes.new
       end
       
       def translate
         attrs = stash.values.collect(&:keys).sum.uniq
-        attrs.each { |attr| translate_attribute(attr) }        
+        attrs.each { |name| translate_attribute(name) }        
       end
       
       def translate_attribute(name)
@@ -27,7 +26,7 @@ module Globalize
           
           unless value.nil?
             stash.write(locale, name, value)
-            automated.write(locale, name, true)
+            value.auto_translated = true
           end
         end   
       end
@@ -35,7 +34,8 @@ module Globalize
       protected
 
       def manual_in_stash?(locale, name)
-        !stash.read(locale, name).nil? && !automated.read(locale, name)
+        value = stash.read(locale, name)
+        !value.nil? && !value.auto_translated?
       end
 
       def translate?(locale, name)

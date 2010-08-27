@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-  translates :title, :content, :published, :published_at
+  translates :title, :content
   validates_presence_of :title
   #versioned
   scope :with_some_title, :conditions => { :title => 'some_title' }
