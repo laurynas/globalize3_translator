@@ -2,16 +2,17 @@ require 'rtranslate'
 
 module Globalize
   module Translator
-    class Adapter < Globalize::ActiveRecord::Adapter
-      
-      def save_translations!
-      
-        translate_missing        
-        super
-        
+    class Adapter
+      attr_reader :record
+
+      delegate    :globalize, :to => :record
+      delegate    :stash,     :to => :globalize
+            
+      def initialize(record)
+        @record     = record
       end
       
-      def translate_missing
+      def translate
         attrs = stash.values.collect(&:keys).sum.uniq
         attrs.each { |attr| translate_attribute(attr) }        
       end

@@ -12,14 +12,6 @@ class TranslatorTest < ActiveSupport::TestCase
     assert_kind_of String, Globalize::Translator::VERSION
   end
   
-  test "Should include adapter" do
-    assert Globalize::Translator::Adapter
-  end
-  
-  test "Should use translator adapter" do
-    assert_kind_of Globalize::Translator::Adapter, Post.new.globalize
-  end
-  
   test "Should accept & store translations" do 
     post       = Post.new
     post.title = "First"
