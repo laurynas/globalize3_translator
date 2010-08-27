@@ -41,6 +41,7 @@ class TranslatorTest < ActiveSupport::TestCase
     
     assert post.save!
     assert post.reload
+    #post = Post.find :last
     
     assert_equal "Dog",         post.title
     assert_equal "Cat",         post.content
