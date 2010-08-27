@@ -12,6 +12,10 @@ class TranslatorTest < ActiveSupport::TestCase
     assert_kind_of String, Globalize::Translator::VERSION
   end
   
+  test "Should return backend" do
+    assert Globalize::Translator.backend
+  end
+  
   test "Should accept & store translations" do 
     post       = Post.new
     post.title = "First"

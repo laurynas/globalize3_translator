@@ -1,14 +1,14 @@
 module Globalize
   module Translator
     class Adapter
-      attr_reader :record, :backend
+      attr_reader :record, :automated
 
       delegate    :globalize, :to => :record
       delegate    :stash,     :to => :globalize
             
       def initialize(record)
         @record     = record
-        @backend    = Globalize::Translator::Backends::RTranslate.new
+        @automated  = Globalize::ActiveRecord::Attributes.new
       end
       
       def translate
@@ -17,31 +17,42 @@ module Globalize
       end
       
       def translate_attribute(name)
-        new_locales = stash.keys.select { |l| translated_attribute?(l, name) }
-        
-        from_locale = new_locales.include?(I18n.default_locale) ?
-          I18n.default_locale : new_locales.first
-          
-        from_value  = stash[from_locale][name]
+        from_locale = get_source_locale(name)
+        from_value  = stash.read(from_locale, name)
         
         translatable_locales.each do |locale|
-          next if translated_attribute?(locale, name)
+          next unless translate?(locale, name)
           
-          #column = record.connection.quote_column_name(column_for_attribute(attr))
-          #next if record.translations.exists?([ "locale=? AND #{column} IS NOT NULL", locale ])
+          value = backend.translate(from_value, from_locale, locale)
           
-          value               = backend.translate(from_value, from_locale.to_s, locale.to_s)
-          stash[locale][name] = value unless value.nil?
-                    
+          unless value.nil?
+            stash.write(locale, name, value)
+            automated.write(locale, name, true)
+          end
         end   
       end
       
-      def translated_attribute?(locale, name)
-        return false if stash[locale].nil?
-        return !stash[locale][name].nil?
+      protected
+
+      def manual_in_stash?(locale, name)
+        !stash.read(locale, name).nil? && !automated.read(locale, name)
+      end
+
+      def translate?(locale, name)
+        #column = record.connection.quote_column_name(column_for_attribute(attr))
+        #next if record.translations.exists?([ "locale=? AND #{column} IS NOT NULL", locale ])
+          
+        !manual_in_stash?(locale, name)
       end
       
-      protected
+      def get_source_locale(name)
+        locales = stash.keys.select { |locale| manual_in_stash?(locale, name) }
+        locales.include?(I18n.default_locale) ? I18n.default_locale : locales.first
+      end
+      
+      def backend
+        Globalize::Translator.backend
+      end
       
       def translatable_locales
         I18n.available_locales

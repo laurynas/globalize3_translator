@@ -9,5 +9,10 @@ require 'globalize/translator/backends/rtranslate'
 module Globalize
   module Translator
     autoload :Adapter,         'globalize/translator/adapter'
+    
+    def self.backend
+      @@backend||= Globalize::Translator::Backends::RTranslate.new
+    end
+    
   end
 end
