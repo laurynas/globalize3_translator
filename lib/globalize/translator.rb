@@ -1,5 +1,6 @@
 require 'globalize/patches/core_ext/string'
 require 'globalize/patches/active_record/migration'
+require 'globalize/patches/active_record/class_methods'
 require 'globalize/patches/active_record/instance_methods'
 require 'globalize/patches/active_record/adapter'
 require 'globalize/patches/active_record/translation'

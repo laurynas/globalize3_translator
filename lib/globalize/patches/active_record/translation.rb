@@ -20,28 +20,28 @@ Globalize::ActiveRecord::Translation.class_eval do
     def marker_name_for_target(field_name)
       "#{field_name}_auto_translated"
     end
-  end  
-  
-  def title
-    val = super
     
-    if val && val.auto_translated.nil?
-      val.auto_translated = title_auto_translated 
+    def auto_translated_attr_accessor(name)
+      #define_method(:"#{name}=") do |value|
+      #  write_auto_translated_attribute(name, value)
+      #end
+      
+      define_method(name) do |*args|
+        read_auto_translated_attribute(name)
+      end
     end
-    
-    val    
   end
   
-  def content
-    val = super
+  def read_auto_translated_attribute(name)
+    val = read_attribute(name)
     
     if val && val.auto_translated.nil?
-      val.auto_translated = content_auto_translated 
+      val.auto_translated = read_attribute("#{name}_auto_translated")
     end
     
-    val    
-  end  
-
+    val
+  end
+  
   private
   
   def set_auto_translations
