@@ -3,8 +3,10 @@ module Globalize
     class Adapter
       attr_reader :record
 
-      delegate    :globalize, :to => :record
-      delegate    :stash,     :to => :globalize
+      delegate :globalize,              :to => :record
+      delegate :stash,                  :to => :globalize
+      delegate :backend,                :to => :translator
+      delegate :translatable_locales,   :to => :translator
             
       def initialize(record)
         @record     = record
@@ -47,12 +49,8 @@ module Globalize
         locales.include?(I18n.default_locale) ? I18n.default_locale : locales.first
       end
       
-      def backend
-        Globalize::Translator.backend
-      end
-      
-      def translatable_locales
-        I18n.available_locales
+      def translator
+        Globalize::Translator
       end
       
     end
