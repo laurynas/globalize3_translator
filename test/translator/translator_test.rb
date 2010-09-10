@@ -22,12 +22,12 @@ class TranslatorTest < ActiveSupport::TestCase
     
     I18n.locale = :lt
     
-    post.title = "Pirmas"
+    post.title = "Valio"
     
     assert post.save!
     assert post.reload
     
-    assert_equal "Pirmas",      post.title
+    assert_equal "Valio",       post.title
     
     I18n.locale = :en
     
@@ -89,6 +89,29 @@ class TranslatorTest < ActiveSupport::TestCase
     
     assert_equal "Vlk", post.title
     assert post.title.auto_translated?
+  end
+  
+  test "Only translate configured locales" do
+    Globalize::Translator.config.locales = [ :lt ]
+    
+    post = Post.new( :title => "Dog", :content => "Cat" )
+    assert post.save!
+    
+    assert post = Post.find(:last)
+    
+    assert_equal "Dog", post.title
+    assert !post.title.auto_translated?
+    
+    I18n.locale = :lt
+    
+    assert_equal "Šuo", post.title
+    assert post.title.auto_translated?
+    
+    I18n.locale = :cs
+    
+    assert_nil post.title
+    
+    Globalize::Translator.config.locales = nil
   end
   
 end

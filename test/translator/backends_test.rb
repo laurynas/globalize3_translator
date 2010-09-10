@@ -15,5 +15,16 @@ class BackendsTest < ActiveSupport::TestCase
     
     assert_equal backend.translate('Dog', :en, :lt), 'Šuo'
   end
+  
+  test "Custom backend" do
+    Globalize::Translator.backend = MyTranslatorBackend.new
+    
+    post = Post.new( :title => "Dog" )
+    assert post.save!
+    
+    I18n.locale = :lt
+    
+    assert_equal "test lt Dog", post.title
+  end
 
 end

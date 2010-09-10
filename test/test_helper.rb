@@ -10,6 +10,7 @@ ActiveRecord::Base.establish_connection(:adapter => 'sqlite3', :database => ':me
 require 'globalize/translator'
 require 'data/schema'
 require 'data/models'
+require 'data/backends'
 
 # add test locales
 I18n.load_path += Dir.glob(File.dirname(__FILE__) + '/data/locales/*.yml')
@@ -23,5 +24,11 @@ ActiveRecord::Base.class_eval do
     def index_exists_on?(column_name)
       connection.indexes(table_name).any? { |index| index.columns == [column_name.to_s] }
     end
+  end
+end
+
+class Test::Unit::TestCase
+  def teardown
+    Globalize::Translator.backend = nil
   end
 end

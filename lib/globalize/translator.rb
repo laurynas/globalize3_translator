@@ -14,17 +14,18 @@ module Globalize
     autoload :Adapter,         'globalize/translator/adapter'
     
     class << self
-    
+      attr_accessor :backend
+      
       def configure
         yield(config)
       end
       
       def config
-        @@config||= Configuration.new        
+        @config||= Configuration.new        
       end
       
       def backend
-        @@backend||= config.backend.new
+        @backend||= config.backend.new
       end
       
       def translatable_locales
