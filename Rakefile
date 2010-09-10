@@ -30,5 +30,5 @@ end
  
 desc 'Release gem'
 task :release => :build do
-  system "gem push globalize3_translator-#{Globalize3::Translator::VERSION}"
+  system "gem push globalize3_translator-#{Globalize::Translator::VERSION}"
 end
