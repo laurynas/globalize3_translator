@@ -39,9 +39,6 @@ module Globalize
       end
 
       def translate?(locale, name)
-        #column = record.connection.quote_column_name(column_for_attribute(attr))
-        #next if record.translations.exists?([ "locale=? AND #{column} IS NOT NULL", locale ])
-          
         !manual_in_stash?(locale, name)
       end
       
