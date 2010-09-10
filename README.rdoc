@@ -1,8 +1,14 @@
 = Globalize3 Translator
 
-* Automatically adds missing model translations. 
+* Automatically adds missing model translations
 * Uses Google Translate by default (you can use your own backend)
 * Marks auto translated data
+
+== Installation
+
+To install Globalize3 Translator use:
+
+  gem install globalize3_translator
 
 == Configuration
 
@@ -16,7 +22,6 @@ config/initializers/globalize3.rb
     # use cust translator backend
     config.backend = MyTranslatorBackend 
   end
-
 
 == Identifying auto translated data with auto_translated?
 

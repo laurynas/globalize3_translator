@@ -1,6 +1,7 @@
 require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
+require 'lib/globalize/translator/version'
 
 desc 'Default: run unit tests.'
 task :default => :test
@@ -20,4 +21,14 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+desc 'Build gem'
+task :build do
+  system "gem build globalize3_translator.gemspec"
+end
+ 
+desc 'Release gem'
+task :release => :build do
+  system "gem push globalize3_translator-#{Globalize3::Translator::VERSION}"
 end
