@@ -50,7 +50,7 @@ module Globalize
       end
       
       def translator
-        Globalize::Translator
+        Translator
       end
       
     end
