@@ -6,7 +6,10 @@ module Globalize
       attr_accessor :locales
       
       def initialize
+        
+        # default configuration
         self.backend = Backends::RTranslate
+        
       end
       
     end
