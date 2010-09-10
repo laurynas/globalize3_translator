@@ -19,7 +19,7 @@ config/initializers/globalize3.rb
     # automatically translate only to specified locales 
     config.locales = [ :lt, :de ]
   
-    # use cust translator backend
+    # use custom translator backend
     config.backend = MyTranslatorBackend 
   end
 
