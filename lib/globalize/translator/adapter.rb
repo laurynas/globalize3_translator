@@ -41,7 +41,13 @@ module Globalize
       end
 
       def translate?(locale, name)
-        !manual_in_stash?(locale, name)
+        if manual_in_stash?(locale, name) 
+          false
+        else
+          # do not overwrite manually translated data
+          val = globalize.fetch(locale, name)
+          val.nil? ? true : val.auto_translated?
+        end
       end
       
       def get_source_locale(name)

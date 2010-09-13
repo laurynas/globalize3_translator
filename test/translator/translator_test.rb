@@ -80,11 +80,6 @@ class TranslatorTest < ActiveSupport::TestCase
     
     assert !post.title.auto_translated?
     
-    I18n.locale = :en
-    
-    assert_equal "Wolf", post.title
-    assert post.title.auto_translated?
-    
     I18n.locale = :cs
     
     assert_equal "Vlk", post.title
@@ -112,6 +107,26 @@ class TranslatorTest < ActiveSupport::TestCase
     assert_nil post.title
     
     Globalize::Translator.config.locales = nil
+  end
+  
+  test "Should not overwrite manually translated data" do
+    post = Post.new( :title => "Dog", :content => "A story about dog" )
+    
+    assert post.save!
+    assert post.reload
+    
+    I18n.locale = :lt
+
+    assert post.title.auto_translated?
+    post.title = "Kas vakar laimėjo pasaulio krepšinio čempionatą?"
+    
+    assert post.save!
+    assert post.reload
+    
+    I18n.locale = :en
+    
+    assert_equal "Dog", post.title
+    assert !post.title.auto_translated? 
   end
   
 end

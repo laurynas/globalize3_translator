@@ -21,6 +21,7 @@ class BackendsTest < ActiveSupport::TestCase
     
     post = Post.new( :title => "Dog" )
     assert post.save!
+    assert post.reload
     
     I18n.locale = :lt
     
